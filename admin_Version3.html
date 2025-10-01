@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Portal - Upload Members</title>
+</head>
+<body>
+  <h2>Admin: Upload Members CSV</h2>
+  <input type="file" id="csvInput" accept=".csv">
+  <div id="importMsg"></div>
+  <script>
+    document.getElementById('csvInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Here you can parse CSV and use for member search
+        document.getElementById('importMsg').innerText = "File loaded: " + file.name;
+        // Save data to localStorage or pass to another page via JS
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>

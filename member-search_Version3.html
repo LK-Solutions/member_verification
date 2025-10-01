@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Member Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f8f8f8;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #0001;
+    }
+    input[type="text"], input[type="file"] {
+      width: 90%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 1em;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 1.1em;
+    }
+    .result:last-child {
+      border-bottom: none;
+    }
+    .no-results {
+      color: #888;
+      font-style: italic;
+    }
+    .import-success {
+      color: green;
+      font-size: 0.95em;
+      margin-bottom: 10px;
+    }
+    .import-error {
+      color: red;
+      font-size: 0.95em;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Member Search</h2>
+    <input type="file" id="csvInput" accept=".csv">
+    <div id="importMsg"></div>
+    <input type="text" id="searchInput" placeholder="Enter last name or part of it">
+    <button id="checkBtn">Check</button>
+    <div id="results"></div>
+  </div>
+  <script>
+    let members = [
+      { firstName: "Alice", lastName: "Johnson" },
+      { firstName: "Bob", lastName: "Smith" },
+      { firstName: "Carol", lastName: "Williams" },
+      { firstName: "David", lastName: "Brown" },
+      { firstName: "Eva", lastName: "Davis" },
+      { firstName: "Frank", lastName: "Miller" },
+      { firstName: "Grace", lastName: "Wilson" },
+      { firstName: "Helen", lastName: "Moore" }
+    ];
+
+    const csvInput = document.getElementById('csvInput');
+    const importMsg = document.getElementById('importMsg');
+    const searchInput = document.getElementById('searchInput');
+    const checkBtn = document.getElementById('checkBtn');
+    const resultsDiv = document.getElementById('results');
+
+    // Parse CSV and update members
+    csvInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        try {
+          const lines = text.trim().split(/\r?\n/);
+          const header = lines[0].split(',').map(h => h.trim().toLowerCase());
+          if (header.length !== 2 || !(header.includes("first name") && header.includes("last name"))) {
+            importMsg.innerHTML = `<div class="import-error">CSV must have "First name" and "Last name" columns.</div>`;
+            return;
+          }
+          const firstNameIdx = header.indexOf("first name");
+          const lastNameIdx = header.indexOf("last name");
+          const importedMembers = [];
+          for (let i = 1; i < lines.length; i++) {
+            const row = lines[i].split(',');
+            if (row.length < 2) continue;
+            importedMembers.push({
+              firstName: row[firstNameIdx].trim(),
+              lastName: row[lastNameIdx].trim()
+            });
+          }
+          if (importedMembers.length === 0) {
+            importMsg.innerHTML = `<div class="import-error">No valid data found in CSV.</div>`;
+            return;
+          }
+          members = importedMembers;
+          importMsg.innerHTML = `<div class="import-success">Import successful! ${members.length} members loaded.</div>`;
+        } catch (err) {
+          importMsg.innerHTML = `<div class="import-error">Failed to import. Please check your CSV format.</div>`;
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    function searchMembers(query) {
+      const lowerQuery = query.toLowerCase();
+      return members.filter(member =>
+        member.lastName.toLowerCase().includes(lowerQuery)
+      );
+    }
+
+    function renderResults(results) {
+      resultsDiv.innerHTML = '';
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<div class="no-results">No matching members found.</div>';
+        return;
+      }
+      results.forEach(member => {
+        const div = document.createElement('div');
+        div.className = 'result';
+        div.textContent = `${member.firstName} ${member.lastName}`;
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    checkBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query === '') {
+        resultsDiv.innerHTML = '';
+        return;
+      }
+      const results = searchMembers(query);
+      renderResults(results);
+    });
+  </script>
+</body>
+</html>
