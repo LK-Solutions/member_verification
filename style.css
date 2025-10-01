@@ -20,7 +20,7 @@ h2 {
   margin-bottom: 24px;
 }
 
-input[type="text"], input[type="file"], button {
+input[type="text"], input[type="file"] {
   width: 80%;
   max-width: 350px;
   min-width: 120px;
@@ -35,12 +35,23 @@ input[type="text"], input[type="file"], button {
 }
 
 button {
+  width: auto;
+  min-width: 160px;
+  max-width: 350px;
+  padding: 10px 18px;
+  font-size: 1em;
   background: #007bff;
   color: #fff;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
   transition: background 0.2s;
   margin-bottom: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  white-space: nowrap;
 }
 
 button:hover {
