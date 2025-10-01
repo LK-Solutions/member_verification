@@ -21,7 +21,7 @@ h2 {
 }
 
 input[type="text"], input[type="file"], button {
-  width: 60%;
+  width: 80%;
   max-width: 350px;
   min-width: 120px;
   padding: 10px;
