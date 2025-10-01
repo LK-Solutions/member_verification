@@ -9,7 +9,7 @@
   <div class="container">
     <h2>CAE ACE Eligible Members Verification</h2>
     <input type="text" id="searchInput" placeholder="Enter last name or part of it">
-    <button id="checkBtn">Check</button>
+    <button id="checkBtn" disabled>Check</button>
     <div id="results"></div>
     <button id="adminBtn" style="margin-top:20px;">Admin Access</button>
   </div>
@@ -2298,10 +2298,21 @@
   }
     ];
 
-    document.getElementById('checkBtn').addEventListener('click', () => {
-      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const searchInput = document.getElementById('searchInput');
+    const checkBtn = document.getElementById('checkBtn');
+    const resultsDiv = document.getElementById('results');
+
+    // Désactive initialement le bouton Check
+    checkBtn.disabled = true;
+
+    // Écoute les changements dans l'input pour activer/désactiver le bouton
+    searchInput.addEventListener('input', () => {
+      checkBtn.disabled = searchInput.value.trim().length < 3;
+    });
+
+    checkBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim().toLowerCase();
       const results = members.filter(m => m.lastName.toLowerCase().includes(query));
-      const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
       if (results.length === 0) {
         resultsDiv.innerHTML = '<div class="no-results">No matching members found.</div>';
