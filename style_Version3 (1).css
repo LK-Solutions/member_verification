@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #0001;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 16px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.result {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1em;
+}
+
+.result:last-child {
+  border-bottom: none;
+}
+
+.no-results {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.import-success {
+  color: green;
+  font-size: 0.95em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.import-error {
+  color: red;
+  font-size: 0.95em;
+  margin-bottom: 10px;
+  text-align: center;
+}
