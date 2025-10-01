@@ -6,10 +6,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>CAE ACE Elligible Members Verification</h2>
-  <input type="text" id="searchInput" placeholder="Enter last name or part of it">
-  <button id="checkBtn">Check</button>
-  <div id="results"></div>
+  <div class="container">
+    <h2>Member Search</h2>
+    <input type="text" id="searchInput" placeholder="Enter last name or part of it">
+    <button id="checkBtn">Check</button>
+    <div id="results"></div>
+    <button id="adminBtn" style="margin-top:20px;">Admin Access</button>
+  </div>
   <script>
     // Load members from localStorage if available
     let members = [];
@@ -23,24 +26,30 @@
         const row = lines[i].split(',');
         if (row.length < 2) continue;
         members.push({
-          firstName: row[firstNameIdx].trim(),
-          lastName: row[lastNameIdx].trim()
+          firstName: row[firstNameIdx]?.trim() || "",
+          lastName: row[lastNameIdx]?.trim() || ""
         });
       }
     }
+
     document.getElementById('checkBtn').addEventListener('click', () => {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const results = members.filter(m => m.lastName.toLowerCase().includes(query));
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
       if (results.length === 0) {
-        resultsDiv.innerHTML = 'No matching members found.';
+        resultsDiv.innerHTML = '<div class="no-results">No matching members found.</div>';
       } else {
         results.forEach(m => {
-          resultsDiv.innerHTML += `<div>${m.firstName} ${m.lastName}</div>`;
+          resultsDiv.innerHTML += `<div class="result">${m.firstName} ${m.lastName}</div>`;
         });
       }
     });
+
+    // Admin access button
+    document.getElementById('adminBtn').onclick = function() {
+      window.location.href = "admin.html";
+    }
   </script>
 </body>
 </html>
