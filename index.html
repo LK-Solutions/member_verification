@@ -14,7 +14,7 @@
     <button id="adminBtn" style="margin-top:20px;">Admin Access</button>
   </div>
   <script>
-    // Static list of members embedded directly in the code
+    // Liste statique des membres
     const members = [
       {
     "firstName": "Winnie wicheila",
@@ -2305,14 +2305,25 @@
     // Désactive initialement le bouton Check
     checkBtn.disabled = true;
 
-    // Écoute les changements dans l'input pour activer/désactiver le bouton
+    // Activer/désactiver le bouton en fonction de la longueur minimale (3)
     searchInput.addEventListener('input', () => {
       checkBtn.disabled = searchInput.value.trim().length < 3;
+      resultsDiv.innerHTML = ''; // Effacer les résultats lors de la saisie
     });
 
+    // Recherche lors du clic bouton
     checkBtn.addEventListener('click', () => {
       const query = searchInput.value.trim().toLowerCase();
-      const results = members.filter(m => m.lastName.toLowerCase().includes(query));
+
+      // Séparer la recherche en mots pour gérer noms composés
+      const queryWords = query.split(/\s+/);
+
+      const results = members.filter(member => {
+        const lastNameLower = member.lastName.toLowerCase();
+        // Chaque mot doit être contenu dans le nom de famille, peu importe l'ordre
+        return queryWords.every(word => lastNameLower.includes(word));
+      });
+
       resultsDiv.innerHTML = '';
       if (results.length === 0) {
         resultsDiv.innerHTML = '<div class="no-results">No matching members found.</div>';
@@ -2323,7 +2334,7 @@
       }
     });
 
-    // Admin access button
+    // Accès admin
     document.getElementById('adminBtn').onclick = function() {
       window.location.href = "admin.html";
     }
